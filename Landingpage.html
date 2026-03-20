@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LogicDoc — AI-Powered Customs Declaration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a0f1e;
+    --navy-mid: #111827;
+    --navy-light: #1a2540;
+    --blue: #1d4ed8;
+    --blue-bright: #3b82f6;
+    --blue-glow: #60a5fa;
+    --cyan: #06b6d4;
+    --white: #f8faff;
+    --muted: #94a3b8;
+    --border: rgba(59,130,246,0.15);
+    --glass: rgba(255,255,255,0.04);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.5;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 5vw;
+    background: rgba(10,15,30,0.7);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    animation: fadeDown 0.8s ease both;
+  }
+
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
+
+  .logo {
+    display: flex; align-items: center; gap: 0.65rem;
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.25rem;
+    letter-spacing: -0.02em; color: var(--white); text-decoration: none;
+  }
+
+  .logo-icon {
+    width: 36px; height: 36px; border-radius: 9px;
+    background: linear-gradient(135deg, var(--blue), var(--cyan));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; font-weight: 900; color: white;
+    box-shadow: 0 0 20px rgba(59,130,246,0.5);
+  }
+
+  .logo span { color: var(--blue-glow); }
+
+  nav ul { list-style: none; display: flex; gap: 2.5rem; }
+  nav ul a {
+    color: var(--muted); font-size: 0.9rem; font-weight: 500;
+    text-decoration: none; transition: color 0.2s;
+    letter-spacing: 0.01em;
+  }
+  nav ul a:hover { color: var(--white); }
+
+  .nav-cta {
+    background: var(--blue); color: white !important;
+    padding: 0.55rem 1.4rem; border-radius: 8px;
+    font-weight: 600 !important; font-size: 0.875rem !important;
+    transition: background 0.2s, box-shadow 0.2s !important;
+    box-shadow: 0 0 0 rgba(59,130,246,0);
+  }
+  .nav-cta:hover { background: var(--blue-bright) !important; box-shadow: 0 0 20px rgba(59,130,246,0.4) !important; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 8rem 5vw 5rem;
+    position: relative; overflow: hidden;
+  }
+
+  /* animated gradient orbs */
+  .orb {
+    position: absolute; border-radius: 50%;
+    filter: blur(80px); pointer-events: none;
+    animation: float 8s ease-in-out infinite;
+  }
+  .orb-1 {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(29,78,216,0.35) 0%, transparent 70%);
+    top: -200px; right: -100px;
+    animation-delay: 0s;
+  }
+  .orb-2 {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(6,182,212,0.2) 0%, transparent 70%);
+    bottom: -100px; left: 10%;
+    animation-delay: -3s;
+  }
+  .orb-3 {
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(59,130,246,0.2) 0%, transparent 70%);
+    top: 30%; left: 40%;
+    animation-delay: -5s;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-30px) scale(1.05); }
+  }
+
+  /* grid lines bg */
+  .hero::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(59,130,246,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,130,246,0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  }
+
+  .hero-inner {
+    position: relative; z-index: 1;
+    max-width: 1200px; margin: 0 auto; width: 100%;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.4rem 1rem; border-radius: 100px;
+    border: 1px solid rgba(59,130,246,0.4);
+    background: rgba(59,130,246,0.08);
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em;
+    color: var(--blue-glow); text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .badge-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--cyan);
+    animation: pulse 2s ease infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    font-weight: 800; line-height: 1.08;
+    letter-spacing: -0.03em;
+    animation: fadeUp 0.8s 0.35s ease both;
+  }
+
+  h1 .accent {
+    background: linear-gradient(135deg, var(--blue-bright), var(--cyan));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-desc {
+    margin-top: 1.5rem;
+    font-size: 1.05rem; line-height: 1.75;
+    color: var(--muted); max-width: 480px;
+    animation: fadeUp 0.8s 0.5s ease both;
+  }
+
+  .hero-actions {
+    display: flex; align-items: center; gap: 1rem;
+    margin-top: 2.5rem;
+    animation: fadeUp 0.8s 0.65s ease both;
+  }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: linear-gradient(135deg, var(--blue), #1e40af);
+    color: white; padding: 0.85rem 2rem;
+    border-radius: 10px; font-weight: 600; font-size: 0.95rem;
+    text-decoration: none; border: none; cursor: pointer;
+    box-shadow: 0 0 30px rgba(29,78,216,0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .btn-primary::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(29,78,216,0.6); }
+  .btn-primary:hover::before { opacity: 1; }
+
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    color: var(--muted); padding: 0.85rem 1.5rem;
+    border-radius: 10px; font-weight: 500; font-size: 0.95rem;
+    text-decoration: none; border: 1px solid var(--border);
+    transition: color 0.2s, border-color 0.2s;
+    background: var(--glass);
+  }
+  .btn-secondary:hover { color: var(--white); border-color: rgba(59,130,246,0.4); }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+
+  /* hero stats */
+  .hero-stats {
+    display: flex; gap: 2rem; margin-top: 3rem;
+    animation: fadeUp 0.8s 0.8s ease both;
+  }
+
+  .stat { display: flex; flex-direction: column; }
+  .stat-num {
+    font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800;
+    color: var(--white); letter-spacing: -0.03em;
+  }
+  .stat-num span { color: var(--blue-bright); }
+  .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 0.15rem; }
+  .stat-div { width: 1px; background: var(--border); }
+
+  /* hero mockup */
+  .hero-visual {
+    position: relative;
+    animation: fadeUp 0.8s 0.4s ease both;
+  }
+
+  .mockup-window {
+    background: var(--navy-light);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 60px rgba(29,78,216,0.15);
+    position: relative;
+  }
+
+  .mockup-bar {
+    background: var(--navy-mid);
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #febc2e; }
+  .dot-g { background: #28c840; }
+
+  .mockup-content { padding: 1.5rem; }
+
+  .m-label {
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+    color: var(--blue-glow); text-transform: uppercase; margin-bottom: 1rem;
+  }
+
+  .field-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.7rem 0.9rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    font-size: 0.82rem;
+  }
+  .field-row:nth-child(odd) { background: rgba(255,255,255,0.03); }
+  .field-name { color: var(--muted); font-weight: 500; }
+  .field-val { color: var(--white); font-family: monospace; font-size: 0.8rem; }
+  .badge-match { background: rgba(16,185,129,0.15); color: #34d399; padding: 0.2rem 0.6rem; border-radius: 100px; font-size: 0.7rem; font-weight: 600; }
+  .badge-warn  { background: rgba(251,191,36,0.15); color: #fbbf24; padding: 0.2rem 0.6rem; border-radius: 100px; font-size: 0.7rem; font-weight: 600; }
+  .badge-rev   { background: rgba(239,68,68,0.15); color: #f87171; padding: 0.2rem 0.6rem; border-radius: 100px; font-size: 0.7rem; font-weight: 600; }
+
+  /* ── FLOW VISUAL ── */
+  .flow-visual {
+    display: flex; align-items: center; gap: 0;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid var(--border);
+    border-radius: 20px; padding: 1.75rem 1.5rem;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.45), 0 0 60px rgba(29,78,216,0.12);
+    position: relative; overflow: hidden;
+  }
+
+  .flow-visual::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(29,78,216,0.07), transparent);
+    pointer-events: none;
+  }
+
+  .flow-col { flex: 1; display: flex; flex-direction: column; gap: 0.6rem; }
+
+  .flow-col-label {
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 0.2rem;
+  }
+
+  .doc-card {
+    display: flex; align-items: center; gap: 0.6rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 0.65rem 0.75rem;
+    transition: border-color 0.3s;
+    animation: fadeUp 0.5s ease both;
+  }
+  .doc-invoice { animation-delay: 0.4s; }
+  .doc-packing { animation-delay: 0.55s; }
+  .doc-bol     { animation-delay: 0.7s; }
+
+  .doc-card:hover { border-color: rgba(59,130,246,0.35); }
+  .doc-icon { font-size: 1.1rem; line-height: 1; }
+  .doc-info { flex: 1; }
+  .doc-name { font-size: 0.75rem; font-weight: 600; color: var(--white); }
+  .doc-sub  { font-size: 0.65rem; color: var(--muted); margin-top: 0.1rem; }
+  .doc-status-dot {
+    width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+  }
+  .doc-status-dot.green { background: #34d399; box-shadow: 0 0 6px rgba(52,211,153,0.6); }
+
+  /* center flow */
+  .flow-center {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 0; padding: 0 0.75rem; flex-shrink: 0;
+  }
+
+  .flow-arrows {
+    display: flex; flex-direction: column; gap: 0.85rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .arrow-line {
+    width: 32px; height: 1px;
+    background: linear-gradient(90deg, rgba(59,130,246,0.4), rgba(6,182,212,0.6));
+    position: relative;
+    animation: flowLine 2s ease-in-out infinite;
+  }
+  .arrow-line:nth-child(2) { animation-delay: 0.3s; }
+  .arrow-line:nth-child(3) { animation-delay: 0.6s; }
+
+  .arrow-line::after {
+    content: '›'; position: absolute; right: -8px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--cyan); font-size: 0.9rem; line-height: 1;
+  }
+
+  @keyframes flowLine {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  .ai-engine {
+    position: relative;
+    width: 48px; height: 48px; border-radius: 14px;
+    background: linear-gradient(135deg, var(--blue), #1e3a8a);
+    border: 1px solid rgba(59,130,246,0.5);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 0.1rem;
+    box-shadow: 0 0 20px rgba(29,78,216,0.5);
+    margin: 0.5rem 0;
+  }
+
+  .ai-pulse {
+    position: absolute; inset: -4px;
+    border-radius: 17px;
+    border: 1px solid rgba(59,130,246,0.3);
+    animation: aiPulse 2s ease infinite;
+  }
+
+  @keyframes aiPulse {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.08); }
+  }
+
+  .ai-icon { font-size: 1.2rem; line-height: 1; }
+  .ai-label { font-size: 0.45rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue-glow); }
+
+  .arrow-out {
+    width: 1px; height: 0;
+    border-left: 1px dashed rgba(59,130,246,0.3);
+    margin-top: 0.5rem; display: none;
+  }
+
+  /* output card */
+  .output-card {
+    background: rgba(29,78,216,0.08);
+    border: 1px solid rgba(29,78,216,0.3);
+    border-radius: 12px; padding: 1rem;
+    animation: fadeUp 0.6s 0.8s ease both;
+  }
+
+  .output-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 0.75rem; padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .output-id {
+    font-family: 'Syne', sans-serif; font-size: 0.75rem;
+    font-weight: 800; color: var(--blue-bright); letter-spacing: 0.02em;
+  }
+
+  .output-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.3rem 0; font-size: 0.72rem;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .output-row:last-of-type { border-bottom: none; }
+  .output-row span:first-child { color: var(--muted); }
+  .output-row span:last-child  { color: var(--white); font-family: monospace; font-size: 0.7rem; }
+
+  .output-footer {
+    display: flex; align-items: center; gap: 0.4rem;
+    margin-top: 0.75rem; padding-top: 0.6rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.7rem; color: #34d399; font-weight: 600;
+  }
+  .out-check { font-size: 0.85rem; }
+
+  .float-badge {
+    position: absolute;
+    background: var(--navy-mid);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.65rem 1rem;
+    font-size: 0.78rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    animation: floatBadge 4s ease-in-out infinite;
+  }
+
+  @keyframes floatBadge {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  .float-badge-1 { top: -1.5rem; right: -2rem; animation-delay: 0s; }
+  .float-badge-2 { bottom: 2rem; left: -2.5rem; animation-delay: -2s; }
+  .float-badge-label { font-size: 0.65rem; color: var(--muted); margin-bottom: 0.2rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .float-badge-val { color: var(--white); font-weight: 700; font-family: 'Syne', sans-serif; font-size: 1rem; }
+  .float-badge-val span { color: var(--cyan); }
+
+  /* ── SECTION BASE ── */
+  section { position: relative; z-index: 1; }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 5vw; }
+
+  .section-tag {
+    display: inline-block;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--blue-bright);
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800; line-height: 1.1; letter-spacing: -0.025em;
+    margin-bottom: 1.2rem;
+  }
+
+  .section-sub {
+    font-size: 1rem; color: var(--muted); line-height: 1.7;
+    max-width: 520px;
+  }
+
+  /* ── HOW IT WORKS ── */
+  .how { padding: 8rem 0; background: linear-gradient(180deg, var(--navy) 0%, var(--navy-mid) 100%); }
+
+  .how-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;
+    margin-top: 4rem;
+  }
+
+  .step-card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 2rem;
+    position: relative; overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .step-card:hover {
+    border-color: rgba(59,130,246,0.4);
+    transform: translateY(-4px);
+  }
+
+  .step-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--blue), var(--cyan));
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .step-card:hover::before { opacity: 1; }
+
+  .step-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em;
+    color: var(--blue-bright);
+    background: rgba(29,78,216,0.12);
+    border: 1px solid rgba(29,78,216,0.25);
+    width: 28px; height: 28px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .step-icon {
+    font-size: 2rem; margin-bottom: 1rem;
+    filter: drop-shadow(0 0 10px rgba(59,130,246,0.5));
+  }
+
+  .step-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem; font-weight: 700; margin-bottom: 0.6rem;
+    color: var(--white);
+  }
+
+  .step-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+
+  .step-connector {
+    position: absolute; right: -0.75rem; top: 50%;
+    transform: translateY(-50%);
+    color: rgba(59,130,246,0.3); font-size: 1.2rem;
+    z-index: 2;
+  }
+
+  /* ── FEATURES ── */
+  .features { padding: 8rem 0; }
+
+  .features-header { margin-bottom: 4rem; }
+
+  .feat-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+  }
+
+  .feat-card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 20px; padding: 2.5rem;
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    position: relative; overflow: hidden;
+  }
+
+  .feat-card:hover {
+    border-color: rgba(59,130,246,0.35);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(29,78,216,0.1);
+    transform: translateY(-3px);
+  }
+
+  .feat-card.large { grid-column: span 2; }
+
+  .feat-icon-wrap {
+    width: 52px; height: 52px; border-radius: 14px;
+    background: rgba(29,78,216,0.15);
+    border: 1px solid rgba(29,78,216,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; margin-bottom: 1.5rem;
+  }
+
+  .feat-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem; font-weight: 700; margin-bottom: 0.75rem;
+  }
+
+  .feat-card p { color: var(--muted); font-size: 0.9rem; line-height: 1.7; }
+
+  .feat-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.25rem; }
+  .feat-tag {
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.05em;
+    padding: 0.3rem 0.75rem; border-radius: 100px;
+    background: rgba(59,130,246,0.1);
+    border: 1px solid rgba(59,130,246,0.2);
+    color: var(--blue-glow);
+  }
+
+  .feat-large-inner {
+    display: grid; grid-template-columns: 1fr 1.2fr; gap: 3rem; align-items: center;
+  }
+
+  /* comparison table inside feature */
+  .mini-table { margin-top: 0; }
+  .mini-row {
+    display: grid; grid-template-columns: 1.2fr 1fr 1fr 0.7fr;
+    gap: 0.75rem; padding: 0.65rem 0.8rem; border-radius: 8px;
+    font-size: 0.78rem; align-items: center;
+  }
+  .mini-row:nth-child(even) { background: rgba(255,255,255,0.03); }
+  .mini-row.header { color: var(--muted); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+  .mini-row .col-f { color: var(--white); font-weight: 500; }
+  .mini-row .col-v { color: var(--muted); font-family: monospace; font-size: 0.75rem; }
+
+  /* ── TESTIMONIALS ── */
+  .testi { padding: 8rem 0; background: linear-gradient(180deg, var(--navy-mid) 0%, var(--navy) 100%); }
+
+  .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 4rem; }
+
+  .testi-card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 2rem;
+    transition: border-color 0.3s;
+  }
+  .testi-card:hover { border-color: rgba(59,130,246,0.35); }
+
+  .testi-stars { color: #fbbf24; font-size: 0.85rem; margin-bottom: 1.1rem; letter-spacing: 0.1em; }
+
+  .testi-text {
+    font-size: 0.9rem; color: var(--muted); line-height: 1.75;
+    font-style: italic; margin-bottom: 1.5rem;
+  }
+
+  .testi-author { display: flex; align-items: center; gap: 0.75rem; }
+  .testi-avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--cyan));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 800; color: white;
+    font-family: 'Syne', sans-serif;
+  }
+  .testi-name { font-size: 0.85rem; font-weight: 600; }
+  .testi-role { font-size: 0.75rem; color: var(--muted); }
+
+  /* ── CTA ── */
+  .cta {
+    padding: 8rem 0;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+
+  .cta-orb {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse, rgba(29,78,216,0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-inner { position: relative; z-index: 1; }
+
+  .cta h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800; letter-spacing: -0.03em; margin-bottom: 1.5rem;
+  }
+
+  .cta p { color: var(--muted); font-size: 1.05rem; margin-bottom: 3rem; max-width: 480px; margin-left: auto; margin-right: auto; }
+
+  .cta-actions { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem 5vw;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem;
+  }
+
+  .footer-copy { color: var(--muted); font-size: 0.85rem; }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a { color: var(--muted); font-size: 0.85rem; text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--white); }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 0;
+  }
+
+  /* responsive */
+  @media (max-width: 900px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .how-grid { grid-template-columns: 1fr 1fr; }
+    .feat-grid { grid-template-columns: 1fr; }
+    .feat-card.large { grid-column: span 1; }
+    .feat-large-inner { grid-template-columns: 1fr; }
+    .testi-grid { grid-template-columns: 1fr; }
+    nav ul { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-icon">LD</div>
+    Logic<span>Doc</span>
+  </a>
+  <ul>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#contact" class="nav-cta">Get Started</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge">
+        <div class="badge-dot"></div>
+        AI-Powered Customs Intelligence
+      </div>
+
+      <h1>
+        From order docs to<br>
+        <span class="accent">customs declaration</span><br>
+        in seconds.
+      </h1>
+
+      <p class="hero-desc">
+        LogicDoc extracts, validates, and reconciles data from your commercial invoices,
+        packing lists, and transport documents — then generates a complete, compliant
+        customs declaration automatically.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#" class="btn-primary">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          Start Free Trial
+        </a>
+        <a href="#how" class="btn-secondary">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M10 8l4 4-4 4"/></svg>
+          See how it works
+        </a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">98<span>%</span></div>
+          <div class="stat-label">Declaration accuracy</div>
+        </div>
+        <div class="stat-div"></div>
+        <div class="stat">
+          <div class="stat-num">1.2<span>s</span></div>
+          <div class="stat-label">Avg. AI extraction</div>
+        </div>
+        <div class="stat-div"></div>
+        <div class="stat">
+          <div class="stat-num">12<span>k+</span></div>
+          <div class="stat-label">Monthly declarations</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HERO VISUAL: Document flow -->
+    <div class="hero-visual">
+      <div class="float-badge float-badge-1">
+        <div class="float-badge-label">OCR Confidence</div>
+        <div class="float-badge-val"><span>99.2</span>%</div>
+      </div>
+      <div class="float-badge float-badge-2">
+        <div class="float-badge-label">Fields Extracted</div>
+        <div class="float-badge-val"><span>24</span> / 24</div>
+      </div>
+
+      <div class="flow-visual">
+        <!-- Input documents -->
+        <div class="flow-col">
+          <div class="flow-col-label">Input Documents</div>
+          <div class="doc-card doc-invoice">
+            <div class="doc-icon">🧾</div>
+            <div class="doc-info">
+              <div class="doc-name">Commercial Invoice</div>
+              <div class="doc-sub">INV-2026-03-0042</div>
+            </div>
+            <div class="doc-status-dot green"></div>
+          </div>
+          <div class="doc-card doc-packing">
+            <div class="doc-icon">📦</div>
+            <div class="doc-info">
+              <div class="doc-name">Packing List</div>
+              <div class="doc-sub">45 packages · 1,250.5 kg</div>
+            </div>
+            <div class="doc-status-dot green"></div>
+          </div>
+          <div class="doc-card doc-bol">
+            <div class="doc-icon">🚢</div>
+            <div class="doc-info">
+              <div class="doc-name">Bill of Lading</div>
+              <div class="doc-sub">Shanghai → Ho Chi Minh</div>
+            </div>
+            <div class="doc-status-dot green"></div>
+          </div>
+        </div>
+
+        <!-- Arrow + AI engine -->
+        <div class="flow-center">
+          <div class="flow-arrows">
+            <div class="arrow-line"></div>
+            <div class="arrow-line"></div>
+            <div class="arrow-line"></div>
+          </div>
+          <div class="ai-engine">
+            <div class="ai-pulse"></div>
+            <div class="ai-icon">⚡</div>
+            <div class="ai-label">AI Engine</div>
+          </div>
+          <div class="arrow-out"></div>
+        </div>
+
+        <!-- Output -->
+        <div class="flow-col">
+          <div class="flow-col-label">Declaration Output</div>
+          <div class="output-card">
+            <div class="output-header">
+              <span class="output-id">CN-2026-031701</span>
+              <span class="badge-match" style="font-size:0.7rem">Ready</span>
+            </div>
+            <div class="output-row"><span>Importer</span><span>TechGlobal Import Ltd.</span></div>
+            <div class="output-row"><span>HS Code</span><span>8471.30.01</span></div>
+            <div class="output-row"><span>Total Value</span><span>$125,000.00</span></div>
+            <div class="output-row"><span>Origin</span><span>Shanghai, China</span></div>
+            <div class="output-row"><span>Net Weight</span><span>1,250.5 kg</span></div>
+            <div class="output-footer">
+              <span class="out-check">✓</span> Validated · Ready to submit
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-tag">Process</div>
+      <h2 class="section-title">Four steps to a<br>complete declaration.</h2>
+      <p class="section-sub">LogicDoc handles the entire customs documentation workflow — from raw file upload to a ready-to-submit declaration.</p>
+    </div>
+
+    <div class="how-grid">
+      <div class="step-card reveal" style="animation-delay:0.1s">
+        <div class="step-num">01</div>
+        <div class="step-icon">📄</div>
+        <h3>Upload Documents</h3>
+        <p>Drop your invoice, packing list, and transport docs. We support PDF, DOCX, XLSX, JPG, and PNG formats.</p>
+        <div class="step-connector">›</div>
+      </div>
+      <div class="step-card reveal" style="animation-delay:0.2s">
+        <div class="step-num">02</div>
+        <div class="step-icon">🤖</div>
+        <h3>AI Extraction</h3>
+        <p>OCR and classification engines extract all declaration-ready fields from every document simultaneously.</p>
+        <div class="step-connector">›</div>
+      </div>
+      <div class="step-card reveal" style="animation-delay:0.3s">
+        <div class="step-num">03</div>
+        <div class="step-icon">🔍</div>
+        <h3>Validation & Reconciliation</h3>
+        <p>Cross-document rules detect mismatches, missing values, and compliance risks before they cause delays.</p>
+        <div class="step-connector">›</div>
+      </div>
+      <div class="step-card reveal" style="animation-delay:0.4s">
+        <div class="step-num">04</div>
+        <div class="step-icon">📋</div>
+        <h3>Declaration Output</h3>
+        <p>A fully-structured, compliant customs declaration is generated and ready for review or direct submission.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="features-header reveal">
+      <div class="section-tag">Capabilities</div>
+      <h2 class="section-title">Everything you need to<br>move cargo faster.</h2>
+    </div>
+
+    <div class="feat-grid">
+      <!-- Large card -->
+      <div class="feat-card large reveal">
+        <div class="feat-large-inner">
+          <div>
+            <div class="feat-icon-wrap">📊</div>
+            <h3>Real-time Field Reconciliation</h3>
+            <p>LogicDoc compares extracted values across all your documents simultaneously, flagging discrepancies before they become costly customs holds. Every field is traced back to its source document.</p>
+            <div class="feat-tags">
+              <span class="feat-tag">Cross-document matching</span>
+              <span class="feat-tag">Auto-flag mismatches</span>
+              <span class="feat-tag">HS Code validation</span>
+            </div>
+          </div>
+          <div class="mini-table">
+            <div class="mini-row header">
+              <span>Field</span><span>Invoice</span><span>Packing List</span><span>Status</span>
+            </div>
+            <div class="mini-row">
+              <span class="col-f">Invoice No.</span>
+              <span class="col-v">0042</span>
+              <span class="col-v">0042</span>
+              <span class="badge-match">Match</span>
+            </div>
+            <div class="mini-row">
+              <span class="col-f">Total Weight</span>
+              <span class="col-v">—</span>
+              <span class="col-v">1,250.5</span>
+              <span class="badge-match">Match</span>
+            </div>
+            <div class="mini-row">
+              <span class="col-f">Consignee</span>
+              <span class="col-v">Dist.</span>
+              <span class="col-v">Dist. Center</span>
+              <span class="badge-warn">Warning</span>
+            </div>
+            <div class="mini-row">
+              <span class="col-f">HS Code</span>
+              <span class="col-v">8471.30.01</span>
+              <span class="col-v">8471.30</span>
+              <span class="badge-rev">Review</span>
+            </div>
+            <div class="mini-row">
+              <span class="col-f">Total Value</span>
+              <span class="col-v">$125,000</span>
+              <span class="col-v">—</span>
+              <span class="badge-match">Match</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="feat-card reveal">
+        <div class="feat-icon-wrap">🔡</div>
+        <h3>Multi-format OCR Engine</h3>
+        <p>Extracts structured data from PDFs, scanned images, Excel files, and Word documents with 99%+ character accuracy — even from poor-quality scans.</p>
+        <div class="feat-tags">
+          <span class="feat-tag">PDF, DOCX, XLSX</span>
+          <span class="feat-tag">Scanned images</span>
+          <span class="feat-tag">Multi-language</span>
+        </div>
+      </div>
+
+      <div class="feat-card reveal">
+        <div class="feat-icon-wrap">🛡️</div>
+        <h3>Role-based Access Control</h3>
+        <p>Admins, editors, and users each get scoped, secure views of the workflow. Approvals flow through the right people — nothing goes out without sign-off.</p>
+        <div class="feat-tags">
+          <span class="feat-tag">Admin / Editor / User</span>
+          <span class="feat-tag">Approval queues</span>
+        </div>
+      </div>
+
+      <div class="feat-card reveal">
+        <div class="feat-icon-wrap">⚡</div>
+        <h3>Declaration Auto-generation</h3>
+        <p>Once validated, LogicDoc assembles a complete customs declaration with all required fields pre-filled, formatted to your local customs authority's specification.</p>
+        <div class="feat-tags">
+          <span class="feat-tag">Ready-to-submit output</span>
+          <span class="feat-tag">Local format support</span>
+        </div>
+      </div>
+
+      <div class="feat-card reveal">
+        <div class="feat-icon-wrap">📈</div>
+        <h3>Audit Trail & History</h3>
+        <p>Every declaration, document version, and validation event is logged. Full traceability for compliance reviews and post-clearance audits.</p>
+        <div class="feat-tags">
+          <span class="feat-tag">Full event log</span>
+          <span class="feat-tag">Export & archive</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TESTIMONIALS -->
+<section class="testi">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-tag">Social Proof</div>
+      <h2 class="section-title">Trusted by logistics teams.</h2>
+    </div>
+
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"We used to spend 4–5 hours preparing a single declaration. LogicDoc cut that down to under 20 minutes. The cross-document reconciliation alone is worth it."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">NK</div>
+          <div>
+            <div class="testi-name">Nguyen Kim Anh</div>
+            <div class="testi-role">Head of Customs, VinaTrans</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal" style="animation-delay:0.1s">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"The HS code validation flagged a mismatch that would have held our shipment for 3 days. That one catch paid for the subscription many times over."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">TL</div>
+          <div>
+            <div class="testi-name">Tran Minh Long</div>
+            <div class="testi-role">Import Manager, MediSupply Corp.</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal" style="animation-delay:0.2s">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Our compliance team finally has peace of mind. Every declaration has a full audit trail, and approvals happen in the platform — no more email chains."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">PH</div>
+          <div>
+            <div class="testi-name">Pham Duc Hung</div>
+            <div class="testi-role">Compliance Director, TechGlobal Import</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CTA -->
+<section class="cta" id="contact">
+  <div class="cta-orb"></div>
+  <div class="container">
+    <div class="cta-inner reveal">
+      <div class="section-tag">Get Started</div>
+      <h2>Ready to ship faster?</h2>
+      <p>Start your free trial today — no credit card required. Process your first 10 declarations completely free.</p>
+      <div class="cta-actions">
+        <a href="#" class="btn-primary">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          Start for Free
+        </a>
+        <a href="#" class="btn-secondary">Book a Demo</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="logo" style="font-size:1rem">
+    <div class="logo-icon" style="width:28px;height:28px;font-size:0.75rem">LD</div>
+    Logic<span>Doc</span>
+  </a>
+  <div class="footer-copy">© 2026 LogicDoc. All rights reserved.</div>
+  <div class="footer-links">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">Contact</a>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 60);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Step card stagger delay on scroll
+  document.querySelectorAll('.step-card').forEach((card, i) => {
+    card.style.transitionDelay = (i * 0.08) + 's';
+  });
+</script>
+</body>
+</html>
