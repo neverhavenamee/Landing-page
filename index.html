@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LogicDoc — AI-Powered Customs Declaration</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
     --navy: #0a0f1e;
@@ -26,7 +27,7 @@
   html { scroll-behavior: smooth; }
 
   body {
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     background: var(--navy);
     color: var(--white);
     overflow-x: hidden;
@@ -55,7 +56,7 @@
 
   .logo {
     display: flex; align-items: center; gap: 0.65rem;
-    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.25rem;
+    font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.25rem;
     letter-spacing: -0.02em; color: var(--white); text-decoration: none;
   }
 
@@ -164,7 +165,7 @@
   }
 
   h1 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Outfit', sans-serif;
     font-size: clamp(2.8rem, 5vw, 4.2rem);
     font-weight: 800; line-height: 1.08;
     letter-spacing: -0.03em;
@@ -228,7 +229,7 @@
 
   .stat { display: flex; flex-direction: column; }
   .stat-num {
-    font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800;
+    font-family: 'Outfit', sans-serif; font-size: 1.8rem; font-weight: 800;
     color: var(--white); letter-spacing: -0.03em;
   }
   .stat-num span { color: var(--blue-bright); }
@@ -407,7 +408,7 @@
   }
 
   .output-id {
-    font-family: 'Syne', sans-serif; font-size: 0.75rem;
+    font-family: 'Outfit', sans-serif; font-size: 0.75rem;
     font-weight: 800; color: var(--blue-bright); letter-spacing: 0.02em;
   }
 
@@ -448,7 +449,7 @@
   .float-badge-1 { top: -1.5rem; right: -2rem; animation-delay: 0s; }
   .float-badge-2 { bottom: 2rem; left: -2.5rem; animation-delay: -2s; }
   .float-badge-label { font-size: 0.65rem; color: var(--muted); margin-bottom: 0.2rem; text-transform: uppercase; letter-spacing: 0.05em; }
-  .float-badge-val { color: var(--white); font-weight: 700; font-family: 'Syne', sans-serif; font-size: 1rem; }
+  .float-badge-val { color: var(--white); font-weight: 700; font-family: 'Outfit', sans-serif; font-size: 1rem; }
   .float-badge-val span { color: var(--cyan); }
 
   /* ── SECTION BASE ── */
@@ -464,7 +465,7 @@
   }
 
   .section-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Outfit', sans-serif;
     font-size: clamp(2rem, 4vw, 3rem);
     font-weight: 800; line-height: 1.1; letter-spacing: -0.025em;
     margin-bottom: 1.2rem;
@@ -506,7 +507,7 @@
   .step-card:hover::before { opacity: 1; }
 
   .step-num {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Outfit', sans-serif;
     font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em;
     color: var(--blue-bright);
     background: rgba(29,78,216,0.12);
@@ -522,7 +523,7 @@
   }
 
   .step-card h3 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Outfit', sans-serif;
     font-size: 1.05rem; font-weight: 700; margin-bottom: 0.6rem;
     color: var(--white);
   }
@@ -570,7 +571,7 @@
   }
 
   .feat-card h3 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Outfit', sans-serif;
     font-size: 1.2rem; font-weight: 700; margin-bottom: 0.75rem;
   }
 
@@ -627,7 +628,7 @@
     background: linear-gradient(135deg, var(--blue), var(--cyan));
     display: flex; align-items: center; justify-content: center;
     font-size: 0.75rem; font-weight: 800; color: white;
-    font-family: 'Syne', sans-serif;
+    font-family: 'Outfit', sans-serif;
   }
   .testi-name { font-size: 0.85rem; font-weight: 600; }
   .testi-role { font-size: 0.75rem; color: var(--muted); }
@@ -649,7 +650,7 @@
   .cta-inner { position: relative; z-index: 1; }
 
   .cta h2 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Outfit', sans-serif;
     font-size: clamp(2.5rem, 5vw, 4rem);
     font-weight: 800; letter-spacing: -0.03em; margin-bottom: 1.5rem;
   }
@@ -680,6 +681,158 @@
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--border), transparent);
     margin: 0;
+  }
+
+  /* ── PRICING ── */
+  .pricing { padding: 8rem 0; }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    align-items: stretch;
+  }
+
+  .price-card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem 1.75rem;
+    display: flex; flex-direction: column;
+    position: relative; overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  }
+
+  .price-card:hover {
+    border-color: rgba(59,130,246,0.35);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  }
+
+  /* MAIN card */
+  .price-card-main {
+    background: linear-gradient(160deg, #1d4ed8 0%, #1e3a8a 60%, #0f172a 100%);
+    border-color: rgba(99,153,255,0.5);
+    box-shadow: 0 0 50px rgba(29,78,216,0.3);
+    transform: translateY(-8px);
+  }
+  .price-card-main:hover {
+    transform: translateY(-14px);
+    box-shadow: 0 30px 60px rgba(29,78,216,0.4);
+  }
+
+  /* ENTERPRISE card */
+  .price-card-enterprise {
+    background: linear-gradient(160deg, rgba(6,182,212,0.08) 0%, var(--glass) 100%);
+    border-color: rgba(6,182,212,0.25);
+  }
+  .price-card-enterprise:hover { border-color: rgba(6,182,212,0.5); }
+
+  .price-popular {
+    position: absolute; top: 1.25rem; right: 1.25rem;
+    background: rgba(255,255,255,0.15);
+    color: #fff; font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.3rem 0.75rem; border-radius: 100px;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+
+  .price-tier {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem; font-weight: 800;
+    color: var(--white); margin-bottom: 0.1rem;
+  }
+
+  .price-tag-line {
+    font-size: 0.75rem; color: var(--muted);
+    font-weight: 500; margin-bottom: 1.25rem;
+    letter-spacing: 0.02em;
+  }
+
+  .price-amount { margin-bottom: 1.5rem; }
+  .price-num {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.55rem; font-weight: 800;
+    color: var(--blue-bright); letter-spacing: -0.02em;
+  }
+  .price-unit { font-size: 0.78rem; color: var(--muted); }
+
+  .price-fit {
+    padding: 0.85rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1.25rem;
+  }
+  .price-fit-label {
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem;
+  }
+  .price-fit-item {
+    font-size: 0.8rem; color: var(--muted); line-height: 1.5;
+  }
+
+  .price-perks {
+    list-style: none; display: flex; flex-direction: column; gap: 0.55rem;
+    flex: 1; margin-bottom: 1.75rem;
+  }
+
+  .price-perks li {
+    display: flex; align-items: flex-start; gap: 0.5rem;
+    font-size: 0.82rem; color: var(--muted); line-height: 1.5;
+  }
+
+  .perk-check {
+    color: #34d399; font-size: 0.75rem; flex-shrink: 0; margin-top: 0.05rem;
+  }
+  .perk-white { color: rgba(255,255,255,0.7); }
+  .perk-cyan  { color: var(--cyan); }
+
+  .price-btn {
+    display: block; text-align: center;
+    padding: 0.75rem 1rem; border-radius: 10px;
+    font-size: 0.875rem; font-weight: 600;
+    text-decoration: none; transition: all 0.2s;
+    margin-top: auto;
+  }
+
+  .price-btn-outline {
+    border: 1px solid var(--border);
+    color: var(--muted);
+    background: transparent;
+  }
+  .price-btn-outline:hover {
+    border-color: rgba(59,130,246,0.45);
+    color: var(--white);
+    background: rgba(59,130,246,0.08);
+  }
+
+  .price-btn-solid {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.25);
+    backdrop-filter: blur(10px);
+  }
+  .price-btn-solid:hover {
+    background: rgba(255,255,255,0.25);
+  }
+
+  .price-btn-cyan {
+    border: 1px solid rgba(6,182,212,0.4);
+    color: var(--cyan);
+    background: rgba(6,182,212,0.06);
+  }
+  .price-btn-cyan:hover {
+    background: rgba(6,182,212,0.12);
+    border-color: rgba(6,182,212,0.7);
+  }
+
+  /* responsive */
+  @media (max-width: 900px) {
+    .pricing-grid { grid-template-columns: 1fr 1fr; }
+    .price-card-main { transform: none; }
+  }
+  @media (max-width: 580px) {
+    .pricing-grid { grid-template-columns: 1fr; }
   }
 
   /* responsive */
@@ -1036,6 +1189,104 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="container">
+    <div class="reveal" style="text-align:center; max-width:600px; margin:0 auto 4rem;">
+      <div class="section-tag">Pricing</div>
+      <h2 class="section-title">Simple, transparent pricing.</h2>
+      <p class="section-sub" style="margin:0 auto;">Chọn gói phù hợp với quy mô doanh nghiệp của bạn. Tất cả các gói đều bao gồm AI extraction và dashboard quản lý.</p>
+    </div>
+
+    <div class="pricing-grid reveal">
+
+      <!-- BASIC -->
+      <div class="price-card">
+        <div class="price-tier">Basic</div>
+        <div class="price-tag-line">Starter</div>
+        <div class="price-amount"><span class="price-num">3,000,000</span><span class="price-unit"> VNĐ / tháng</span></div>
+        <div class="price-fit">
+          <div class="price-fit-label">Phù hợp với</div>
+          <div class="price-fit-item">Forwarder nhỏ</div>
+          <div class="price-fit-item">Bắt đầu dùng AI</div>
+        </div>
+        <ul class="price-perks">
+          <li><span class="perk-check">✓</span> 50 tờ khai / tháng</li>
+          <li><span class="perk-check">✓</span> 2 users</li>
+          <li><span class="perk-check">✓</span> 1 upload · 1 kiểm tra</li>
+          <li><span class="perk-check">✓</span> AI đọc chứng từ</li>
+          <li><span class="perk-check">✓</span> Gợi ý khai báo cơ bản</li>
+          <li><span class="perk-check">✓</span> Lưu trữ dữ liệu</li>
+        </ul>
+        <a href="#" class="price-btn price-btn-outline">Bắt đầu dùng thử</a>
+      </div>
+
+      <!-- STANDARD — highlighted -->
+      <div class="price-card price-card-main">
+        <div class="price-popular">Most Popular</div>
+        <div class="price-tier" style="color:#fff">Standard</div>
+        <div class="price-tag-line" style="color:rgba(255,255,255,0.6)">Main</div>
+        <div class="price-amount"><span class="price-num" style="color:#fff">3,800,000</span><span class="price-unit" style="color:rgba(255,255,255,0.6)"> VNĐ / tháng</span></div>
+        <div class="price-fit" style="border-color:rgba(255,255,255,0.1)">
+          <div class="price-fit-label" style="color:rgba(255,255,255,0.5)">Phù hợp với</div>
+          <div class="price-fit-item" style="color:rgba(255,255,255,0.8)">SME logistics</div>
+        </div>
+        <ul class="price-perks">
+          <li><span class="perk-check perk-white">✓</span> <span style="color:rgba(255,255,255,0.9)">100 tờ khai / tháng</span></li>
+          <li><span class="perk-check perk-white">✓</span> <span style="color:rgba(255,255,255,0.9)">4 users</span></li>
+          <li><span class="perk-check perk-white">✓</span> <span style="color:rgba(255,255,255,0.9)">AI trích xuất + kiểm tra dữ liệu</span></li>
+          <li><span class="perk-check perk-white">✓</span> <span style="color:rgba(255,255,255,0.9)">Gợi ý nâng cao</span></li>
+          <li><span class="perk-check perk-white">✓</span> <span style="color:rgba(255,255,255,0.9)">Automation cơ bản</span></li>
+          <li><span class="perk-check perk-white">✓</span> <span style="color:rgba(255,255,255,0.9)">Dashboard quản lý</span></li>
+        </ul>
+        <a href="#" class="price-btn price-btn-solid">Chọn gói này</a>
+      </div>
+
+      <!-- PREMIUM -->
+      <div class="price-card">
+        <div class="price-tier">Premium</div>
+        <div class="price-tag-line">Professional</div>
+        <div class="price-amount"><span class="price-num">5,000,000</span><span class="price-unit"> VNĐ / tháng</span></div>
+        <div class="price-fit">
+          <div class="price-fit-label">Phù hợp với</div>
+          <div class="price-fit-item">Doanh nghiệp lớn hơn</div>
+        </div>
+        <ul class="price-perks">
+          <li><span class="perk-check">✓</span> 500 tờ khai / tháng</li>
+          <li><span class="perk-check">✓</span> 7 users</li>
+          <li><span class="perk-check">✓</span> Automation nâng cao</li>
+          <li><span class="perk-check">✓</span> Kiểm tra lỗi thông minh</li>
+          <li><span class="perk-check">✓</span> Phân quyền người dùng</li>
+          <li><span class="perk-check">✓</span> API cơ bản</li>
+        </ul>
+        <a href="#" class="price-btn price-btn-outline">Bắt đầu dùng thử</a>
+      </div>
+
+      <!-- ENTERPRISE -->
+      <div class="price-card price-card-enterprise">
+        <div class="price-tier">Enterprise</div>
+        <div class="price-tag-line">Custom</div>
+        <div class="price-amount"><span class="price-num">7,000,000</span><span class="price-unit"> VNĐ / tháng</span></div>
+        <div class="price-fit">
+          <div class="price-fit-label">Phù hợp với</div>
+          <div class="price-fit-item">DN lớn / nhiều chi nhánh</div>
+        </div>
+        <ul class="price-perks">
+          <li><span class="perk-check perk-cyan">✓</span> Unlimited tờ khai <span style="color:var(--muted);font-size:0.7rem">(fair use)</span></li>
+          <li><span class="perk-check perk-cyan">✓</span> Unlimited users</li>
+          <li><span class="perk-check perk-cyan">✓</span> Custom workflow</li>
+          <li><span class="perk-check perk-cyan">✓</span> Tích hợp hệ thống</li>
+          <li><span class="perk-check perk-cyan">✓</span> Dedicated support</li>
+        </ul>
+        <a href="#" class="price-btn price-btn-cyan">Liên hệ tư vấn</a>
+      </div>
+
     </div>
   </div>
 </section>
